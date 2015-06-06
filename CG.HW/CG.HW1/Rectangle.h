@@ -26,6 +26,7 @@ public:
 
 	MyRectangle* GetChild(){ return mChild; }
 
+	void CheckCrash(MyRectangle* rectangle);
 	void CheckCrash();
 
 protected:

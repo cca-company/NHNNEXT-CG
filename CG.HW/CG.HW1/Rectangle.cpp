@@ -25,6 +25,30 @@ void MyRectangle::SetChildColor(GLfloat colorR, GLfloat colorG, GLfloat colorB)
 	mChild->SetColor(colorR, colorG, colorB);
 }
 
+void MyRectangle::CheckCrash(MyRectangle* rectangle)
+{
+	GLfloat x1 = rectangle->mX;
+	GLfloat x2 = rectangle->mX+rectangle->mSize;
+	GLfloat y1 = rectangle->mY;
+	GLfloat y2 = rectangle->mY+rectangle->mSize;
+
+	if ((mX > x1 && mX < x2) && (mY > y1 && mY <y2) ||
+		(mX + mSize > x1 && mX + mSize < x2) && (mY + mSize > y1 && mY + mSize < y2) ||
+		(mX > x1 && mX < x2) && (mY + mSize > y1 && mY + mSize <y2) ||
+		(mX + mSize > x1 && mX + mSize < x2) && (mY > y1 && mY < y2))
+	{
+		mStepX = -mStepX;
+		mStepY = -mStepY;
+	}
+
+	mX += mStepX;
+	mY += mStepY;
+	if (mChild != nullptr)
+	{
+		mChild->mX += mStepX;
+		mChild->mY += mStepY;
+	}
+}
 void MyRectangle::CheckCrash()
 {
 	if (mX < mFrame.x1 || mX > mFrame.x2 - mSize)
@@ -38,6 +62,12 @@ void MyRectangle::CheckCrash()
 
 	if (mY > mFrame.y2 - mSize)
 		mY = mFrame.y2 - mSize - 1;
+
+	if (mX < mFrame.x1)
+		mX = mFrame.x1+1;
+
+	if (mY < mFrame.y1)
+		mY = mFrame.y1+1;
 
 	mX += mStepX;
 	mY += mStepY;
